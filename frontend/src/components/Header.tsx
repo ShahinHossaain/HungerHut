@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import MobileNav from "./MobileNav";
 import MainNav from "./MainNav";
+import { Hamburger } from "lucide-react";
 
 const Header: React.FC = () => {
   return (
@@ -8,9 +9,10 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex justify-between items-center">
         <Link
           to="/"
-          className="text-3xl font-bold tracking-tight text-orange-500"
+          className="flex gap-2 items-center text-3xl font-bold tracking-tight text-orange-500"
         >
-          HungerHut.com
+          <Hamburger className="h-10 w-10" />
+          <span>HungerHut.com</span>
         </Link>
         <div className="md:hidden">
           <MobileNav />
