@@ -20,6 +20,8 @@ export const useCreateMyUser = () => {
       },
     });
 
+    console.log("accessToken", accessToken);
+
     const response = await fetch(`${API_BASE_URL}/api/my/user`, {
       method: "POST",
       headers: {

@@ -1,3 +1,4 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
@@ -7,6 +8,8 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
+  const { user } = useAuth0();
+  console.log(user);
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
