@@ -1,6 +1,20 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
 
+export const getCurrentUser = async (req: Request, res: Response) => {
+    try {
+        const currentUser = await User.findOne({ _id: req.userId });
+        if (!currentUser) {
+          return res.status(404).json({ message: "User not found" });
+        }
+        res.json(currentUser);
+      } catch (error) {
+        console.error("Error updating user:", error);
+        return res.status(500).json({ message: "Internal server error" });
+      }
+      
+}
+
 export const createCurrentUser = async (req: Request, res: Response) => {
     try {
         const { auth0Id } = req.body;
@@ -22,33 +36,6 @@ export const createCurrentUser = async (req: Request, res: Response) => {
 };
 
 export const updateCurrentUser = async (req: Request, res: Response) => {
-    // try {
-  
-    //    const auth0UserId = req.params.id;
-    //    const {name,addressLine1, city, country} = req.body;
-
-    //    console.log(auth0UserId, name, addressLine1, city)
-   
-  
-    //   // 🟢 Step 3: Update user in DB using Auth0 ID
-    //   const updatedUser = await User.findOneAndUpdate(
-    //     { auth0Id: auth0UserId },
-    //     { name, addressLine1, city, country },
-    //     { new: true }
-    //   );
-  
-    //   // 🟠 Step 4: If user not found
-    //   if (!updatedUser) {
-    //     return res.status(404).json({ message: "User not found" });
-    //   }
-  
-    //   // 🟢 Step 5: Success response
-    //   return res.status(200).json({
-    //     message: "User information updated successfully",
-    //     user: updatedUser,
-    //   });
-  
-    // } 
     
     try{
         const { name, addressLine1, country, city } = req.body;
