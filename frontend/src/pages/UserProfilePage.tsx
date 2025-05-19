@@ -9,7 +9,7 @@ const UserProfilePage: React.FC = () => {
     return <span>Loading...</span>;
   }
 
-  if (currentUser) {
+  if (!currentUser) {
     <span>Unable to load user profile</span>;
   }
 

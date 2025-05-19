@@ -20,8 +20,11 @@ export const jwtParse = async (
 
   // যদি authorization না থাকে বা Bearer দিয়ে শুরু না হয়
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return;
+    const error = new Error("Unauthorized");
+    (error as any).status = 401;
+    return next(error);
   }
+  
 
   // টোকেন বের করা
   const token = authorization.split(" ")[1];
