@@ -1,10 +1,25 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Restaurant from "../models/restaurantModel";
 import cloudinary from "cloudinary";
 import mongoose from "mongoose";
+import { ApiError } from "../utilities/ApiError";
+
+
+export const getMyRestaurant = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return next(new ApiError(404, "Restaurant not found"));
+    }
+    res.json(restaurant);
+  } catch (error) {
+    console.error("Error fetching restaurant:", error);
+    next(new ApiError(500, "Something went wrong"));
+  }
+};
+
 
 export const createMyRestaurant = async (req: Request, res: Response) => {
-  console.log("Creating restaurant");
   try {
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
     if (existingRestaurant) {

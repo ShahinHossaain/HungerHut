@@ -79,7 +79,7 @@ const DetailsSection: React.FC = () => {
 
       <FormField
         control={control}
-        name="deliveryTime"
+        name="estimatedDeliveryTime"
         render={({ field }) => (
           <FormItem className="max-w-[25%]">
             <FormLabel>Estimated Delivery Time (Minutes)</FormLabel>

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRoute from "./routes/myUserRoute";
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
+import { errorHandler } from "./middleware/errorMiddleware";
 
 
 mongoose
@@ -36,21 +37,7 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/my/user", myUserRoute)
 app.use("/api/my/restaurant", myRestaurantRoute)
 
-app.use((
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  console.error("❌ Error:", err.message || err);
-
-  const status = err.status || 500;
-  const message = err.message || "Internal Server Error";
-  res.status(status).json({
-    success: false,
-    message,
-  });
-});
+app.use(errorHandler);
 
 app.listen(7000, () => {
 console.log("server started on localhost:7000");

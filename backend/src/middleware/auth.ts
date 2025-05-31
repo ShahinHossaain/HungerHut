@@ -16,9 +16,7 @@ export const jwtParse = async (
   next: NextFunction
 ) => {
   const authorization = req.headers.authorization;
-  console.log("in jwtParse")
 
-  // যদি authorization না থাকে বা Bearer দিয়ে শুরু না হয়
   if (!authorization || !authorization.startsWith("Bearer ")) {
     const error = new Error("Unauthorized");
     (error as any).status = 401;
