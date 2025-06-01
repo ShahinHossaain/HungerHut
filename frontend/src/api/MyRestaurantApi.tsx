@@ -40,7 +40,9 @@ export const useGetMyRestaurant = () => {
   });
 
   if (isSuccess) {
-    toast.success("Restaurant loaded successfully!");
+    setTimeout(() => {
+      toast.success("Restaurant loaded successfully!");
+    }, 100); // 1000ms = 1 second
   }
 
   if (isError) {

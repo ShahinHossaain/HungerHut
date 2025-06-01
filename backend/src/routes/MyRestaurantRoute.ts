@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { createMyRestaurant, getMyRestaurant } from "../controllers/MyRestaurantController";
+import { createMyRestaurant, getMyRestaurant, updateMyRestaurant } from "../controllers/MyRestaurantController";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import { validateMyRestaurantRequest } from "../middleware/validation";
 import { Request, Response, NextFunction } from "express";
@@ -24,6 +24,16 @@ router.post("/",
     try {
         console.log("try")
         await createMyRestaurant(req, res);
+    } catch (error) {
+        console.log("catch")
+        next(error);
+    }
+});
+router.put("/",
+   upload.single("imageFile"),validateMyRestaurantRequest , jwtCheck ,jwtParse, async (req:Request, res:Response, next:NextFunction) => {
+    try {
+        console.log("try")
+        await updateMyRestaurant(req, res, next);
     } catch (error) {
         console.log("catch")
         next(error);

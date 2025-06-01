@@ -28,14 +28,10 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
         .json({ message: "User restaurant already exists" });
     }
 
-    const image = req.file as Express.Multer.File;
-    const base64Image = Buffer.from(image.buffer).toString("base64");
-    const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+    const imageUrl = await uploadImage(req.file as Express.Multer.File);
 
     const restaurant = new Restaurant(req.body);
-    restaurant.imageUrl = uploadResponse.url;
+    restaurant.imageUrl =imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
 
     await restaurant.save();
@@ -48,3 +44,43 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const updateMyRestaurant = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+if (!restaurant) {
+  next(new ApiError(404, "Restaurant not found"));
+  return;
+}
+restaurant.restaurantName = req.body.restaurantName;
+restaurant.city = req.body.city;
+restaurant.country = req.body.country;
+restaurant.deliveryPrice = req.body.deliveryPrice;
+restaurant.estimatedDeliveryTime = req.body.estimatedDeliveryTime;
+restaurant.cuisines = req.body.cuisines;
+restaurant.menuItems = req.body.menuItems;
+
+if (req.file) {
+  const imageUrl = await uploadImage(req.file as Express.Multer.File);
+  restaurant.imageUrl = imageUrl;
+}
+
+restaurant.save();
+res.status(200).json(restaurant);
+   
+    res.json(restaurant);
+  } catch (error) {
+    console.error("Error updating restaurant:", error);
+    next(new ApiError(500, "Something went wrong"));
+  }
+
+};
+
+const uploadImage = async (file: Express.Multer.File) => {
+  const base64Image = Buffer.from(file.buffer).toString("base64");
+  const dataURI = `data:${file.mimetype};base64,${base64Image}`;
+
+  const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+  return uploadResponse.url;
+}
+ 
