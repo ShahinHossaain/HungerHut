@@ -6,6 +6,7 @@ import myUserRoute from "./routes/myUserRoute";
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/MyRestaurantRoute";
 import { errorHandler } from "./middleware/errorMiddleware";
+import restaurantRoute from "./routes/RestaurantRoute";
 
 
 mongoose
@@ -36,6 +37,7 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoute)
 app.use("/api/my/restaurant", myRestaurantRoute)
+app.use("/api/restaurant", restaurantRoute)
 
 app.use(errorHandler);
 
