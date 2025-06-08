@@ -5,8 +5,8 @@ import Restaurant from "../models/restaurantModel";
 export const searchRestaurants = async (req: Request, res:Response, next: NextFunction) => {
     try {
         const city = req.params.city;
-        const searchQuery = (req.query.search as string) || "";
-        const selectedCuisines = (req.query.cuisine as string) || "";
+        const searchQuery = (req.query.searchQuery as string) || "";
+        const selectedCuisines = (req.query.selectedCuisines as string) || "";
         const sortOption = (req.query.sort as string) || "lastUpdated";
         const page = parseInt(req.query.page as string) || 1;
 

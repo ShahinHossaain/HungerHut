@@ -1,12 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import type { RestaurantSearchResult } from "../types";
+import type { SearchState } from "../pages/SearchPage";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const useSearchRestaurants = (city?: string) => {
+export const useSearchRestaurants = (
+  searchState: SearchState,
+  city?: string
+) => {
   const createSearchRequest = async (): Promise<RestaurantSearchResult> => {
+    const params = new URLSearchParams();
+    console.log("searchState from", searchState);
+    params.set("searchQuery", searchState.searchQuery);
+
     const response = await fetch(
-      `${API_BASE_URL}/api/restaurant/search/${city}`
+      `${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
     );
 
     if (!response.ok) {
@@ -17,7 +25,7 @@ export const useSearchRestaurants = (city?: string) => {
   };
 
   const { data: results, isLoading } = useQuery({
-    queryKey: ["searchRestaurants", city],
+    queryKey: ["searchRestaurants", city, searchState],
     queryFn: createSearchRequest,
     enabled: !!city,
   });
