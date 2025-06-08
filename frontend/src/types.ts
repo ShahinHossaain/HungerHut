@@ -25,3 +25,12 @@ export type User = {
     menuItems: MenuItem[];
     imageUrl: string;
   };
+
+  export type RestaurantSearchResult = {
+    data: Restaurant[];
+    pagination: {
+      total: number;
+      page: number;
+      pages: number;
+    };
+  }
